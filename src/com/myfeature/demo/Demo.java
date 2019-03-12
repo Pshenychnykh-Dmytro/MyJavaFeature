@@ -1,6 +1,4 @@
 package com.myfeature.demo;
-import java.util.ArrayList;
-import java.util.List;
 import com.myfeature.application.Application;
 
 public class Demo {
