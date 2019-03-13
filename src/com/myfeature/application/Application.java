@@ -48,7 +48,7 @@ public class Application {
 	}
 	
 	public double sqrt(double a) throws Exception, InterruptedException, UnsupportedOperationException {
-		Double result = Math.sqrt(a);;
+		Double result = Math.sqrt(a);
 		Thread.sleep(delay);
 		if(Double.isInfinite(result))
 			throw new UnsupportedOperationException("zero divide");
