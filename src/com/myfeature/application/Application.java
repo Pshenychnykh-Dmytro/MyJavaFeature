@@ -1,5 +1,7 @@
 package com.myfeature.application;
-
+/*
+ * Perfect prototype
+ */
 public class Application {
 	
 	public double plus(double a, double b) {
