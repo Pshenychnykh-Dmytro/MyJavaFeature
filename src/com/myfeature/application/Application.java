@@ -1,11 +1,18 @@
 package com.myfeature.application;
 
+/* 
+ *	problem #1: unstable work, throwing exceptions;
+ *	problem #2: passing problems to 3rd-party developers;
+ *	problem #3: delays during work;
+ *	problem #4: duplicated code; 
+ */
 public class Application {
+	//delay simulation
 	private int delay = 2000;
 	
 	public double plus(double a, double b) throws Exception, InterruptedException, UnsupportedOperationException {
-		Double result = a + b;
-		Thread.sleep(delay);
+		Double result = a + b;		
+		Thread.sleep(delay);		
 		if(Double.isInfinite(result))
 			throw new UnsupportedOperationException("zero divide");
 		else if(Double.isNaN(result))
