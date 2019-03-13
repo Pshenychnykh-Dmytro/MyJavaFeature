@@ -3,7 +3,7 @@ import com.myfeature.application.Application;
 
 public class Demo {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedOperationException, InterruptedException, Exception {
 		new Demo().start();
 	}
 	
@@ -11,7 +11,7 @@ public class Demo {
 	
 	private Application app = new Application();
 	
-	public void start() {
+	public void start() throws UnsupportedOperationException, InterruptedException, Exception {
 		System.out.println("Start demo:");
 		System.out.println(line);
 				
