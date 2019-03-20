@@ -12,80 +12,8 @@ public class Application {
 	private int delay = 2000;
 	
 	abstract class Function{
-		protected double a;
-		protected double b;
-		
-		Function(double a, double b){
-			this.a = a;
-			this.b = b;			
-		}
-		
-		Function(double a){
-			this.a = a;
-		}
-		
 		abstract double function();
-	}
-	
-	class FunctionPlus extends Function{
-
-		FunctionPlus(double a, double b) {
-			super(a, b);
-		}
-
-		@Override
-		double function() {
-			return a+b;
-		}		
-	}
-	
-	class FunctionMinus extends Function{
-
-		FunctionMinus(double a, double b) {
-			super(a, b);
-		}
-
-		@Override
-		double function() {
-			return a-b;
-		}		
-	}
-	
-	class FunctionMultiply extends Function{
-
-		FunctionMultiply(double a, double b) {
-			super(a, b);
-		}
-
-		@Override
-		double function() {
-			return a*b;
-		}		
-	}
-	
-	class FunctionDivide extends Function{
-
-		FunctionDivide(double a, double b) {
-			super(a, b);
-		}
-
-		@Override
-		double function() {
-			return a/b;
-		}		
-	}
-	
-	class FunctionSqrt extends Function{
-
-		FunctionSqrt(double a) {
-			super(a);
-		}
-
-		@Override
-		double function() {
-			return Math.sqrt(a);
-		}		
-	}
+	}	
 	
 	private void operation(Function function) {
 		try {
@@ -107,22 +35,47 @@ public class Application {
 	}
 	
 	public void plus(double a, double b) {
-		operation(new FunctionPlus(a, b));	
+		operation(new Function() {			
+			@Override
+			double function() {				
+				return a+b;
+			}
+		});	
 	}
 	
 	public void minus(double a, double b) {
-		operation(new FunctionMinus(a, b));
+		operation(new Function() {
+			@Override
+			double function() {				
+				return a-b;
+			}
+		});
 	}
 	
 	public void multiply(double a, double b) {
-		operation(new FunctionMultiply(a, b));
+		operation(new Function() {
+			@Override
+			double function() {				
+				return a*b;
+			}
+		});
 	}
 	
 	public void divide(double a, double b) {
-		operation(new FunctionDivide(a, b));
+		operation(new Function() {			
+			@Override
+			double function() {				
+				return a/b;
+			}
+		});
 	}
 	
 	public void sqrt(double a) {
-		operation(new FunctionSqrt(a));
+		operation(new Function() {			
+			@Override
+			double function() {				
+				return Math.sqrt(a);
+			}
+		});
 	}
 }
