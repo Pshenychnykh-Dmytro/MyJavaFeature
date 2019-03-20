@@ -1,5 +1,7 @@
 package com.myfeature.application;
 
+import com.myfeature.functions.Function;
+
 /* 
  *	problem #1: unstable work, throwing exceptions; - RESOLVED
  *	problem #2: passing problems to 3rd-party developers; -RESOLVED
@@ -11,11 +13,7 @@ public class Application {
 	//delay simulation
 	private int delay = 2000;
 	
-	abstract class Function{
-		abstract double function();
-	}	
-	
-	private void operation(Function function) {
+	private void operation(Function<Double> function) {
 		try {
 			Double result = function.function();		
 			Thread.sleep(delay);		
@@ -35,45 +33,45 @@ public class Application {
 	}
 	
 	public void plus(double a, double b) {
-		operation(new Function() {			
+		operation(new Function<Double>() {			
 			@Override
-			double function() {				
+			public Double function() {				
 				return a+b;
 			}
 		});	
 	}
 	
 	public void minus(double a, double b) {
-		operation(new Function() {
+		operation(new Function<Double>() {
 			@Override
-			double function() {				
+			public Double function() {				
 				return a-b;
 			}
 		});
 	}
 	
 	public void multiply(double a, double b) {
-		operation(new Function() {
+		operation(new Function<Double>() {
 			@Override
-			double function() {				
+			public Double function() {				
 				return a*b;
 			}
 		});
 	}
 	
 	public void divide(double a, double b) {
-		operation(new Function() {			
+		operation(new Function<Double>() {			
 			@Override
-			double function() {				
+			public Double function() {				
 				return a/b;
 			}
 		});
 	}
 	
 	public void sqrt(double a) {
-		operation(new Function() {			
+		operation(new Function<Double>() {			
 			@Override
-			double function() {				
+			public Double function() {				
 				return Math.sqrt(a);
 			}
 		});
