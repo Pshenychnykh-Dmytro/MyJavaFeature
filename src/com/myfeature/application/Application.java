@@ -2,6 +2,7 @@ package com.myfeature.application;
 
 import com.myfeature.actions.Action1;
 import com.myfeature.actions.Action2;
+import com.myfeature.delegate.Delegate;
 import com.myfeature.functions.Function;
 
 /* 
@@ -9,8 +10,9 @@ import com.myfeature.functions.Function;
  *	problem #2: passing problems to 3rd-party developers; -RESOLVED
  *	problem #3: delays during work;
  *	problem #4: duplicated code; - RESOLVED
- *	problem #5: encapsulate display logic(only console display) -RESOLVED;
- *	problem #6: Inversion of control problem(depend on extra component);
+ *	problem #5: encapsulate display logic(only console display) - RESOLVED;
+ *	problem #6: Inversion of control problem(depend on extra component) - RESOLVED;
+ *	problem #7: Security problem(Invoking should be encapsulated)
  */
 public class Application {
 	public enum OperationType{
@@ -18,13 +20,8 @@ public class Application {
 	}
 	//delay simulation
 	private int delay = 2000;
-	private Action2<Double, OperationType> onSuccessResult;
-	private Action1<Exception> onFailResult; 
-	
-	public Application(Action2<Double, OperationType> onSuccessResult,  Action1<Exception> onFailResult) {
-		this.onSuccessResult = onSuccessResult;
-		this.onFailResult = onFailResult;
-	}
+	public Delegate<Action2<Double, OperationType>> onSuccessResult = new Delegate<>();
+	public Delegate<Action1<Exception>> onFailResult = new Delegate<>();
 	
 	private void operation(Function<Double> function, OperationType operationType) {
 		try {
@@ -35,10 +32,10 @@ public class Application {
 			else if(Double.isNaN(result))
 				throw new UnsupportedOperationException("complex result");
 			else
-				onSuccessResult.action(result, operationType);
+				onSuccessResult.Invoke(c -> c.action(result, operationType));
 		}
 		catch(Exception e) {
-			onFailResult.action(e);
+			onFailResult.Invoke(c -> c.action(e));
 		}			
 	}
 	

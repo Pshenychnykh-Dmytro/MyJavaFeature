@@ -10,18 +10,30 @@ public class Demo {
 	private final String line = "--------------------------------------";		
 	
 	private void showResult(Double result, Application.OperationType operation) {
-		System.out.println(result+" : "+operation);		
+		System.out.println("Display: "+result+" : "+operation);		
+	}
+	
+	private void writeToFileResult(Double result, Application.OperationType operation) {
+		System.out.println("Write to file: "+result+" : "+operation);		
+	}
+	
+	private void sendEmailResult(Double result, Application.OperationType operation) {
+		System.out.println("Send email: "+result+" : "+operation);		
 	}
 	
 	private void showError(Exception exception) {
 		System.err.println(exception.getLocalizedMessage()+" : "+exception.getClass().getName());				
 	}
 	
-	private Application app = new Application((result, operation) -> showResult(result, operation), exception -> showError(exception));
+	private Application app = new Application();
 	
 	public void start() {
 		System.out.println("Start demo:");
-		System.out.println(line);				
+		System.out.println(line);
+		app.onSuccessResult.Add((r, o) -> showResult(r, o));
+		app.onSuccessResult.Add((r, o) -> writeToFileResult(r, o));
+		app.onSuccessResult.Add((r, o) -> sendEmailResult(r, o));
+		app.onFailResult.Add(e -> showError(e));
 		app.plus(28, 31);		
 		app.minus(13, 26);
 		app.multiply(12, 12);		
