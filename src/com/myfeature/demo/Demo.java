@@ -9,7 +9,15 @@ public class Demo {
 	
 	private final String line = "--------------------------------------";		
 	
-	private Application app = new Application();
+	private void showResult(Double result, Application.OperationType operation) {
+		System.out.println(result+" : "+operation);		
+	}
+	
+	private void showError(Exception exception) {
+		System.err.println(exception.getLocalizedMessage()+" : "+exception.getClass().getName());				
+	}
+	
+	private Application app = new Application((result, operation) -> showResult(result, operation), exception -> showError(exception));
 	
 	public void start() {
 		System.out.println("Start demo:");
