@@ -1,5 +1,7 @@
 package com.myfeature.application;
 
+import java.util.function.Consumer;
+
 import com.myfeature.actions.Action1;
 import com.myfeature.actions.Action2;
 import com.myfeature.delegate.Delegate;
@@ -13,16 +15,35 @@ import com.myfeature.functions.Function;
  *	problem #4: duplicated code; - RESOLVED
  *	problem #5: encapsulate display logic(only console display) - RESOLVED;
  *	problem #6: Inversion of control problem(depend on extra component) - RESOLVED;
- *	problem #7: Security problem(Invoking should be encapsulated) - RESOLVED
+ *	problem #7: Security problem(Invoking should be encapsulated) - RESOLVED PERFECT!
  */
 public class Application {
+	private static class EventImpl<TAction> implements Event<TAction>{
+		private Delegate<TAction> delegate = new Delegate<>();
+
+		@Override
+		public void subscribe(TAction action) {
+			delegate.Add(action);
+		}
+
+		@Override
+		public void unsubscribe(TAction action) {
+			delegate.Remove(action);
+		}
+		
+		private static <T> void invoke(Event<T> event, Consumer<T> consumer) {
+			((EventImpl<T>)event).delegate.Invoke(consumer);
+		}
+		
+	}
+	
 	public enum OperationType{
-		plus, minus, multiply, divide, sqrt
+		plus, minus, multiply, divide, sqrt, power
 	}
 	//delay simulation
 	private int delay = 2000;
-	private Delegate<Action2<Double, OperationType>> onSuccessResult = new Delegate<>();
-	private Delegate<Action1<Exception>> onFailResult = new Delegate<>(); 
+	public Event<Action2<Double, OperationType>> onSuccessResult = new EventImpl<>();
+	public Event<Action1<Exception>> onFailResult = new EventImpl<>(); 
 	
 	private void operation(Function<Double> function, OperationType operationType) {
 		try {
@@ -33,27 +54,11 @@ public class Application {
 			else if(Double.isNaN(result))
 				throw new UnsupportedOperationException("complex result");
 			else
-				onSuccessResult.Invoke(c -> c.action(result, operationType));
+				EventImpl.invoke(onSuccessResult, c -> c.action(result, operationType));
 		}
 		catch(Exception e) {
-			onFailResult.Invoke(c -> c.action(e));
+			EventImpl.invoke(onFailResult, c -> c.action(e));
 		}			
-	}
-	
-	public void addOnSuccessResultAction(Action2<Double, OperationType> action) {
-		this.onSuccessResult.Add(action);
-	}
-	
-	public void addOnFailResultAction(Action1<Exception> action) {
-		this.onFailResult.Add(action);		
-	}
-	
-	public void removeOnSuccessResultAction(Action2<Double, OperationType> action) {
-		this.onSuccessResult.Remove(action);
-	}
-	
-	public void removeOnFailResultAction(Action1<Exception> action) {
-		this.onFailResult.Remove(action);		
 	}
 	
 	public void plus(double a, double b) {
@@ -74,5 +79,9 @@ public class Application {
 	
 	public void sqrt(double a) {
 		operation(() -> Math.sqrt(a), OperationType.sqrt);
+	}
+	
+	public void power(double x, double power) {
+		operation(() -> Math.pow(x, power), OperationType.power);		
 	}
 }

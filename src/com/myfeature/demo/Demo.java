@@ -30,18 +30,20 @@ public class Demo {
 	public void start() {
 		System.out.println("Start demo:");
 		System.out.println(line);
-		app.addOnSuccessResultAction((r, o) -> showResult(r, o));
-		app.addOnSuccessResultAction((r, o) -> writeToFileResult(r, o));
-		app.addOnSuccessResultAction((r, o) -> sendEmailResult(r, o));
-		app.addOnFailResultAction(e -> showError(e));
-		app.plus(28, 31);		
+		app.onSuccessResult.subscribe((r, o) -> showResult(r, o));
+		//app.onSuccessResult.subscribe((r, o) -> writeToFileResult(r, o));
+		//app.onSuccessResult.subscribe((r, o) -> sendEmailResult(r, o));
+		app.onFailResult.subscribe(e -> showError(e));
+		
+		app.plus(28, 31);
 		app.minus(13, 26);
-		app.multiply(12, 12);		
-		app.divide(45, 90);		
-		app.sqrt(81);		
-		System.out.println(line);		
+		app.multiply(12, 12);
+		app.divide(45, 90);
+		app.sqrt(81);
+		app.power(2, -0.5);
+		System.out.println(line);
 		app.divide(45, 0);
 		app.sqrt(-81);
-		System.out.println("Stable end");		
+		System.out.println("Stable end");
 	}
 }
