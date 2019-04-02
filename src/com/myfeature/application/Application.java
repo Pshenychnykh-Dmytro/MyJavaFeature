@@ -13,7 +13,7 @@ import com.myfeature.functions.Function;
  *	problem #4: duplicated code; - RESOLVED
  *	problem #5: encapsulate display logic(only console display) - RESOLVED;
  *	problem #6: Inversion of control problem(depend on extra component) - RESOLVED;
- *	problem #7: Security problem(Invoking should be encapsulated)
+ *	problem #7: Security problem(Invoking should be encapsulated) - RESOLVED
  */
 public class Application {
 	public enum OperationType{
