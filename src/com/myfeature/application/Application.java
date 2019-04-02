@@ -3,6 +3,7 @@ package com.myfeature.application;
 import com.myfeature.actions.Action1;
 import com.myfeature.actions.Action2;
 import com.myfeature.delegate.Delegate;
+import com.myfeature.event.Event;
 import com.myfeature.functions.Function;
 
 /* 
@@ -20,8 +21,8 @@ public class Application {
 	}
 	//delay simulation
 	private int delay = 2000;
-	public Delegate<Action2<Double, OperationType>> onSuccessResult = new Delegate<>();
-	public Delegate<Action1<Exception>> onFailResult = new Delegate<>();
+	private Delegate<Action2<Double, OperationType>> onSuccessResult = new Delegate<>();
+	private Delegate<Action1<Exception>> onFailResult = new Delegate<>(); 
 	
 	private void operation(Function<Double> function, OperationType operationType) {
 		try {
@@ -37,6 +38,22 @@ public class Application {
 		catch(Exception e) {
 			onFailResult.Invoke(c -> c.action(e));
 		}			
+	}
+	
+	public void addOnSuccessResultAction(Action2<Double, OperationType> action) {
+		this.onSuccessResult.Add(action);
+	}
+	
+	public void addOnFailResultAction(Action1<Exception> action) {
+		this.onFailResult.Add(action);		
+	}
+	
+	public void removeOnSuccessResultAction(Action2<Double, OperationType> action) {
+		this.onSuccessResult.Remove(action);
+	}
+	
+	public void removeOnFailResultAction(Action1<Exception> action) {
+		this.onFailResult.Remove(action);		
 	}
 	
 	public void plus(double a, double b) {

@@ -30,10 +30,10 @@ public class Demo {
 	public void start() {
 		System.out.println("Start demo:");
 		System.out.println(line);
-		app.onSuccessResult.Add((r, o) -> showResult(r, o));
-		app.onSuccessResult.Add((r, o) -> writeToFileResult(r, o));
-		app.onSuccessResult.Add((r, o) -> sendEmailResult(r, o));
-		app.onFailResult.Add(e -> showError(e));
+		app.addOnSuccessResultAction((r, o) -> showResult(r, o));
+		app.addOnSuccessResultAction((r, o) -> writeToFileResult(r, o));
+		app.addOnSuccessResultAction((r, o) -> sendEmailResult(r, o));
+		app.addOnFailResultAction(e -> showError(e));
 		app.plus(28, 31);		
 		app.minus(13, 26);
 		app.multiply(12, 12);		
