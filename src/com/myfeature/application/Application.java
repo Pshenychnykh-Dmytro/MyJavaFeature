@@ -16,6 +16,7 @@ import com.myfeature.functions.Function;
  *	problem #5: encapsulate display logic(only console display) - RESOLVED;
  *	problem #6: Inversion of control problem(depend on extra component) - RESOLVED;
  *	problem #7: Security problem(Invoking should be encapsulated) - RESOLVED PERFECT!
+ *  problem #8: Performance problem, adding async operation - RESOLVED! 
  */
 public class Application {
 	private static class EventImpl<TAction> implements Event<TAction>{
@@ -46,19 +47,22 @@ public class Application {
 	public Event<Action1<Exception>> onFailResult = new EventImpl<>(); 
 	
 	private void operation(Function<Double> function, OperationType operationType) {
-		try {
-			Double result = function.function();		
-			Thread.sleep(delay);		
-			if(Double.isInfinite(result))
-				throw new UnsupportedOperationException("zero divide");
-			else if(Double.isNaN(result))
-				throw new UnsupportedOperationException("complex result");
-			else
-				EventImpl.invoke(onSuccessResult, c -> c.action(result, operationType));
-		}
-		catch(Exception e) {
-			EventImpl.invoke(onFailResult, c -> c.action(e));
-		}			
+		new Thread(() -> {
+			try {
+				Double result = function.function();		
+				Thread.sleep(delay);		
+				if(Double.isInfinite(result))
+					throw new UnsupportedOperationException("zero divide");
+				else if(Double.isNaN(result))
+					throw new UnsupportedOperationException("complex result");
+				else
+					EventImpl.invoke(onSuccessResult, c -> c.action(result, operationType));
+				
+			}
+			catch(Exception e) {
+				EventImpl.invoke(onFailResult, c -> c.action(e));
+			}			
+		}).start();
 	}
 	
 	public void plus(double a, double b) {
