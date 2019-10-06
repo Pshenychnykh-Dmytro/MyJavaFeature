@@ -12,18 +12,11 @@ public class Application {
 	private int delay = 2000;
 	
 	abstract class Function{
-		protected double a;
-		protected double b;
+		protected double[] args;
 		
-		Function(double a, double b){
-			this.a = a;
-			this.b = b;			
+		Function(double... args){
+			this.args = args;
 		}
-		
-		Function(double a){
-			this.a = a;
-		}
-		
 		abstract double function();
 	}
 	
@@ -35,7 +28,7 @@ public class Application {
 
 		@Override
 		double function() {
-			return a+b;
+			return args[0] + args[1];
 		}		
 	}
 	
@@ -47,7 +40,7 @@ public class Application {
 
 		@Override
 		double function() {
-			return a-b;
+			return args[0] - args[1];
 		}		
 	}
 	
@@ -59,7 +52,7 @@ public class Application {
 
 		@Override
 		double function() {
-			return a*b;
+			return args[0] * args[1];
 		}		
 	}
 	
@@ -71,7 +64,7 @@ public class Application {
 
 		@Override
 		double function() {
-			return a/b;
+			return args[0] / args[1];
 		}		
 	}
 	
@@ -83,14 +76,14 @@ public class Application {
 
 		@Override
 		double function() {
-			return Math.sqrt(a);
+			return Math.sqrt(args[0]);
 		}		
 	}
 	
 	private void operation(Function function) {
 		try {
-			Double result = function.function();		
-			Thread.sleep(delay);		
+			Double result = function.function();
+			Thread.sleep(delay);
 			if(Double.isInfinite(result))
 				throw new UnsupportedOperationException("zero divide");
 			else if(Double.isNaN(result))
@@ -99,11 +92,11 @@ public class Application {
 				System.out.println(result);
 		}
 		catch(InterruptedException e) {
-			System.err.println(e.getLocalizedMessage());			
+			System.err.println(e.getLocalizedMessage());
 		}
 		catch(UnsupportedOperationException e) {
-			System.err.println(e.getLocalizedMessage());		
-		}		
+			System.err.println(e.getLocalizedMessage());
+		}
 	}
 	
 	public void plus(double a, double b) {
